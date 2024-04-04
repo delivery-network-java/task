@@ -2,7 +2,7 @@ package src.org.tyrell.task;
 
 import java.util.Objects;
 
-public class Task {
+public class Task extends TaskItem{
 
     private long id;
     private String title;
