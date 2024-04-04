@@ -1,4 +1,4 @@
-package org.tyrell.task;
+package  src.org.tyrell.task;
 
 public class Main {
     public static void main(String[] args) {
