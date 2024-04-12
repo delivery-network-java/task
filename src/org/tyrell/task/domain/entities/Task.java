@@ -1,7 +1,5 @@
 package src.org.tyrell.task.domain.entities;
 
-import src.org.tyrell.task.TaskItem;
-
 import java.util.Objects;
 
 public class Task extends TaskItem {
