@@ -1,10 +1,12 @@
-package src.org.tyrell.task;
+package src.org.tyrell.task.domain.entities;
+
+import src.org.tyrell.task.TaskItem;
 
 import java.util.Objects;
 
-public class Task extends TaskItem{
+public class Task extends TaskItem {
 
-    private long id;
+    private Long id;
     private String title;
     private String description;
     private Integer status;
@@ -14,7 +16,7 @@ public class Task extends TaskItem{
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Task task = (Task) o;
-        return id == task.id;
+        return Objects.equals(id, task.id);
     }
 
     @Override
@@ -22,20 +24,12 @@ public class Task extends TaskItem{
         return Objects.hashCode(id);
     }
 
-    public long getId() {
-        return id;
+    public Integer getStatus() {
+        return status;
     }
 
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
+    public void setStatus(Integer status) {
+        this.status = status;
     }
 
     public String getDescription() {
@@ -46,11 +40,19 @@ public class Task extends TaskItem{
         this.description = description;
     }
 
-    public Integer getStatus() {
-        return status;
+    public String getTitle() {
+        return title;
     }
 
-    public void setStatus(Integer status) {
-        this.status = status;
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 }
