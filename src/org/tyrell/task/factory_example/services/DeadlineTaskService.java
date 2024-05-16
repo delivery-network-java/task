@@ -12,21 +12,23 @@ public class DeadlineTaskService implements TaskFactory {
 
     @Override
     public Optional<Task> findById(Long id) {
-        return getDeadlineTaskList
-                .stream()
-                .filter(task -> task.getId().equals(id))
-                .findAny();
+//        return getDeadlineTaskList
+//                .stream()
+//                .filter(task -> task.getId().equals(id))
+//                .findAny();
+        return  null;
     }
 
     @Override
     public List<Task> listAll() {
-        return getDeadlineTaskList;
+        //return getDeadlineTaskList;
+        return null;
     }
 
     @Override
     public void create(Task task) {
-        getDeadlineTaskList.add(task);
-        System.out.println("Deadline task created: " + task.getId());
+//        getDeadlineTaskList.add(task);
+//        System.out.println("Deadline task created: " + task.getId());
     }
 
     @Override
