@@ -11,6 +11,9 @@ public class DBConnection {
     private final static String password = "root";
     private static Connection connection = null;
 
+    private DBConnection() {
+    }
+
     public static Connection getInstance() throws SQLException {
         if (connection == null) {
             connection = DriverManager.getConnection(url, username, password);
