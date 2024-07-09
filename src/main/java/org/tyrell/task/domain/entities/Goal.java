@@ -20,7 +20,7 @@ public class Goal {
     @Column(name = "gol_name", length = 30, nullable = false)
     private String name;
 
-    @Column(name = "gol_name", length = 200)
+    @Column(name = "gol_description", length = 200)
     private String description;
 
 }
