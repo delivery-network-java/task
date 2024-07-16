@@ -27,7 +27,7 @@ public class DeadlineTask {
     private String description;
 
     @Column(name = "dtk_status", nullable = false)
-    private Integer status;
+    private Integer status = 1;
 
     @Column(name = "dtk_end_date", nullable = false)
     private Date endDate;
