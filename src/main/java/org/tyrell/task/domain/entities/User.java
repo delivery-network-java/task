@@ -38,10 +38,13 @@ public class User {
     @Column(name = "usr_last_name", length = 100, nullable = false)
     private String lastName;
 
-    @Column(name = "usr_phone", length = 100, unique = true, nullable = false)
+    @Column(name = "usr_email", length = 100, unique = true, nullable = false)
     private String email;
 
-    @Column(name = "usr_email", length = 100, nullable = false)
+    @Column(name = "usr_phone", length = 100, unique = true, nullable = false)
+    private String phone;
+
+    @Column(name = "usr_status", length = 100, nullable = false)
     private Integer status;
 
     @OneToMany(mappedBy = "user")

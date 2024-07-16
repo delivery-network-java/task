@@ -1,58 +1,58 @@
 package org.tyrell.task.application.services.impl;
 
 import org.mapstruct.factory.Mappers;
-import org.tyrell.task.application.mapper.RoleMapper;
-import org.tyrell.task.application.services.RoleService;
-import org.tyrell.task.domain.dtos.RoleRequestDto;
-import org.tyrell.task.domain.dtos.RoleResponseDto;
-import org.tyrell.task.domain.entities.Role;
+import org.tyrell.task.application.mapper.DeadlineTaskMapper;
+import org.tyrell.task.application.services.DeadlineTaskService;
+import org.tyrell.task.domain.dtos.DeadlineTaskRequestDto;
+import org.tyrell.task.domain.dtos.DeadlineTaskResponseDto;
+import org.tyrell.task.domain.entities.DeadlineTask;
+import org.tyrell.task.persistence.repositories.DeadlineTaskRepository;
 import org.tyrell.task.persistence.repositories.Repository;
-import org.tyrell.task.persistence.repositories.RoleRepository;
 
 import java.util.List;
 
-public class DeadlineTaskServiceImpl implements RoleService {
+public class DeadlineTaskServiceImpl implements DeadlineTaskService {
 
-    private final RoleMapper roleMapper;
-    private final Repository<Role> repository;
+    private final DeadlineTaskMapper deadlineTaskMapper;
+    private final Repository<DeadlineTask> repository;
 
     public DeadlineTaskServiceImpl() {
-        roleMapper = Mappers.getMapper(RoleMapper.class);
-        repository = new RoleRepository();
+        deadlineTaskMapper = Mappers.getMapper(DeadlineTaskMapper.class);
+        repository = new DeadlineTaskRepository();
     }
 
     @Override
-    public List<RoleResponseDto> findAll() {
-        return repository.findAll().stream().map(roleMapper::toResponseDto).toList();
+    public List<DeadlineTaskResponseDto> findAll() {
+        return repository.findAll().stream().map(deadlineTaskMapper::toResponseDto).toList();
     }
 
     @Override
-    public RoleResponseDto findById(Long id) {
-        var role = repository.findById(id);
+    public DeadlineTaskResponseDto findById(Long id) {
+        var deadlineTask = repository.findById(id);
 
-        return roleMapper.toResponseDto(role);
+        return deadlineTaskMapper.toResponseDto(deadlineTask);
     }
 
     @Override
-    public RoleResponseDto persist(RoleRequestDto roleRequestDto) {
-        var role = roleMapper.toEntity(roleRequestDto);
-        var rolePersisted = repository.persist(role);
+    public DeadlineTaskResponseDto persist(DeadlineTaskRequestDto deadlineTaskRequestDto) {
+        var deadLineTask = deadlineTaskMapper.toEntity(deadlineTaskRequestDto);
+        var deadLineTaskPersisted = repository.persist(deadLineTask);
 
-        return roleMapper.toResponseDto(rolePersisted);
+        return deadlineTaskMapper.toResponseDto(deadLineTaskPersisted);
     }
 
     @Override
-    public RoleResponseDto update(Long id, RoleRequestDto roleRequestDto) {
-        var role = repository.findById(id);
+    public DeadlineTaskResponseDto update(Long id, DeadlineTaskRequestDto deadlineTaskRequestDto) {
+        var deadLineTask = repository.findById(id);
 
-        if (null == role) {
+        if (null == deadLineTask) {
             return null;
         }
 
-        roleMapper.update(role, roleRequestDto);
-        var roleUpdated = repository.update(role);
+        deadlineTaskMapper.update(deadLineTask, deadlineTaskRequestDto);
+        var deadLineTaskUpdated = repository.update(deadLineTask);
 
-        return roleMapper.toResponseDto(roleUpdated);
+        return deadlineTaskMapper.toResponseDto(deadLineTaskUpdated);
     }
 
     @Override

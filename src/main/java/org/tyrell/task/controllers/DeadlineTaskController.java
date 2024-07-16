@@ -6,10 +6,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
-import org.tyrell.task.application.services.RoleService;
-import org.tyrell.task.application.services.impl.RoleServiceImpl;
-import org.tyrell.task.domain.dtos.RoleRequestDto;
-import org.tyrell.task.domain.dtos.RoleResponseDto;
+import org.tyrell.task.application.services.impl.DeadlineTaskServiceImpl;
+import org.tyrell.task.domain.dtos.DeadlineTaskRequestDto;
+import org.tyrell.task.domain.dtos.DeadlineTaskResponseDto;
 import org.tyrell.task.persistence.DBConnection;
 
 import java.sql.SQLException;
@@ -19,11 +18,11 @@ import java.util.List;
 @RequestMapping("/deadline-task")
 public class DeadlineTaskController {
 
-    private RoleService roleService;
+    private DeadlineTaskServiceImpl deadlineTaskService;
 
     @PostConstruct
     public void init() {
-        roleService = new RoleServiceImpl();
+        deadlineTaskService = new DeadlineTaskServiceImpl();
 
         try {
             DBConnection.getInstance();
@@ -42,34 +41,34 @@ public class DeadlineTaskController {
     }
 
     @GetMapping
-    public List<RoleResponseDto> getAllRoles() {
-        return roleService.findAll();
+    public List<DeadlineTaskResponseDto> getAllDeadlineTask() {
+        return deadlineTaskService.findAll();
     }
 
     @GetMapping("/{id}")
-    public RoleResponseDto getRole(@PathVariable Long id) {
-        var roleResponseDto = roleService.findById(id);
+    public DeadlineTaskResponseDto getDeadlineTask(@PathVariable Long id) {
+        var deadlineTaskResponseDto = deadlineTaskService.findById(id);
 
-        if (null == roleResponseDto) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Role not found");
+        if (null == deadlineTaskResponseDto) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "DeadlineTask not found");
         }
 
-        return roleResponseDto;
+        return deadlineTaskResponseDto;
     }
 
     @PostMapping
-    public RoleResponseDto createRole(@RequestBody RoleRequestDto roleRequestDto) {
-        return roleService.persist(roleRequestDto);
+    public DeadlineTaskResponseDto createDeadlineTask(@RequestBody DeadlineTaskRequestDto deadlineTaskRequestDto) {
+        return deadlineTaskService.persist(deadlineTaskRequestDto);
     }
 
     @PutMapping("/{id}")
-    public RoleResponseDto updateRole(@PathVariable Long id, @RequestBody RoleRequestDto roleRequestDto) {
-        return roleService.update(id, roleRequestDto);
+    public DeadlineTaskResponseDto updateRole(@PathVariable Long id, @RequestBody DeadlineTaskRequestDto deadlineTaskRequestDto) {
+        return deadlineTaskService.update(id, deadlineTaskRequestDto);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteRole(@PathVariable Long id) {
-        roleService.delete(id);
+        deadlineTaskService.delete(id);
 
         return ResponseEntity.noContent().build();
     }
