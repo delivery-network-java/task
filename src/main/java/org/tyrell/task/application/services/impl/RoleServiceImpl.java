@@ -6,9 +6,11 @@ import org.tyrell.task.application.services.RoleService;
 import org.tyrell.task.domain.dtos.RoleRequestDto;
 import org.tyrell.task.domain.dtos.RoleResponseDto;
 import org.tyrell.task.domain.entities.Role;
+import org.tyrell.task.persistence.DBConnection;
 import org.tyrell.task.persistence.repositories.Repository;
 import org.tyrell.task.persistence.repositories.RoleRepository;
 
+import java.sql.SQLException;
 import java.util.List;
 
 public class RoleServiceImpl implements RoleService {
@@ -22,42 +24,93 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public List<RoleResponseDto> findAll() {
-        return repository.findAll().stream().map(roleMapper::toResponseDto).toList();
-    }
+    public List<RoleResponseDto> findAll() throws SQLException {
+        try (var connection = DBConnection.getConnection()) {
+            repository.setConnection(connection);
 
-    @Override
-    public RoleResponseDto findById(Long id) {
-        var role = repository.findById(id);
-
-        return roleMapper.toResponseDto(role);
-    }
-
-    @Override
-    public RoleResponseDto persist(RoleRequestDto roleRequestDto) {
-        var role = roleMapper.toEntity(roleRequestDto);
-        var rolePersisted = repository.persist(role);
-
-        return roleMapper.toResponseDto(rolePersisted);
-    }
-
-    @Override
-    public RoleResponseDto update(Long id, RoleRequestDto roleRequestDto) {
-        var role = repository.findById(id);
-
-        if (null == role) {
-            return null;
+            return repository.findAll().stream().map(roleMapper::toResponseDto).toList();
         }
-
-        roleMapper.update(role, roleRequestDto);
-        var roleUpdated = repository.update(role);
-
-        return roleMapper.toResponseDto(roleUpdated);
     }
 
     @Override
-    public void delete(Long id) {
-        repository.delete(id);
+    public RoleResponseDto findById(Long id) throws SQLException {
+        try (var connection = DBConnection.getConnection()) {
+            repository.setConnection(connection);
+            var role = repository.findById(id);
+
+            return roleMapper.toResponseDto(role);
+        }
+    }
+
+    @Override
+    public RoleResponseDto persist(RoleRequestDto roleRequestDto) throws SQLException {
+        try (var connection = DBConnection.getConnection()) {
+            repository.setConnection(connection);
+
+            if (connection.getAutoCommit()) {
+                connection.setAutoCommit(false);
+            }
+
+            try {
+                var role = roleMapper.toEntity(roleRequestDto);
+                var rolePersisted = repository.persist(role);
+                connection.commit();
+
+                return roleMapper.toResponseDto(rolePersisted);
+            } catch (Exception e) {
+                connection.rollback();
+
+                throw e;
+            }
+        }
+    }
+
+    @Override
+    public RoleResponseDto update(Long id, RoleRequestDto roleRequestDto) throws SQLException {
+        try (var connection = DBConnection.getConnection()) {
+            repository.setConnection(connection);
+            var role = repository.findById(id);
+
+            if (null == role) {
+                return null;
+            }
+
+            if (connection.getAutoCommit()) {
+                connection.setAutoCommit(false);
+            }
+
+            try {
+                roleMapper.update(role, roleRequestDto);
+                var roleUpdated = repository.update(role);
+                connection.commit();
+
+                return roleMapper.toResponseDto(roleUpdated);
+            } catch (Exception e) {
+                connection.rollback();
+
+                throw e;
+            }
+        }
+    }
+
+    @Override
+    public void delete(Long id) throws SQLException {
+        try (var connection = DBConnection.getConnection()) {
+            repository.setConnection(connection);
+
+            if (connection.getAutoCommit()) {
+                connection.setAutoCommit(false);
+            }
+
+            try {
+                repository.delete(id);
+                connection.commit();
+            } catch (Exception e) {
+                connection.rollback();
+
+                throw e;
+            }
+        }
     }
 
 }

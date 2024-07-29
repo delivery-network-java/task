@@ -1,17 +1,21 @@
 package org.tyrell.task.persistence.repositories;
 
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.List;
 
 public interface Repository <T> {
 
-    List<T> findAll();
+    void setConnection(Connection connection);
 
-    T findById(Long id);
+    List<T> findAll() throws SQLException;
 
-    T persist(T entity);
+    T findById(Long id) throws SQLException;
 
-    T update(T entity);
+    T persist(T entity) throws SQLException;
 
-    void delete(Long id);
+    T update(T entity) throws SQLException;
+
+    void delete(Long id) throws SQLException;
 
 }
