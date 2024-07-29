@@ -1,7 +1,6 @@
 package org.tyrell.task.controllers;
 
 import jakarta.annotation.PostConstruct;
-import jakarta.annotation.PreDestroy;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -10,9 +9,7 @@ import org.tyrell.task.application.services.RoleService;
 import org.tyrell.task.application.services.impl.RoleServiceImpl;
 import org.tyrell.task.domain.dtos.RoleRequestDto;
 import org.tyrell.task.domain.dtos.RoleResponseDto;
-import org.tyrell.task.persistence.DBConnection;
 
-import java.sql.SQLException;
 import java.util.List;
 
 @RestController
@@ -24,21 +21,6 @@ public class RoleController {
     @PostConstruct
     public void init() {
         roleService = new RoleServiceImpl();
-
-        try {
-            DBConnection.getInstance();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    @PreDestroy
-    public void destroy() {
-        try {
-            DBConnection.getInstance().close();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
     }
 
     @GetMapping

@@ -10,7 +10,7 @@ import java.util.List;
 public class RoleRepository implements Repository<Role> {
 
     private Connection getConnection() throws SQLException {
-        return DBConnection.getInstance();
+        return DBConnection.getConnection();
     }
 
     @Override
