@@ -32,7 +32,7 @@ public class RecurringTask {
     private String frequency;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "usr_id", nullable = false)
+    @JoinColumn(name = "usr_id", nullable = true)
     private User user;
 
     public RecurringTask(Long id) {
